@@ -1,4 +1,5 @@
 from utils.pascal_voc_clean_xml import pascal_voc_clean_xml
+from utils.udacity_voc_csv import udacity_voc_csv
 from numpy.random import permutation as perm
 from .test import preprocess
 # from .misc import show
@@ -26,7 +27,8 @@ def parse(self, exclusive = False):
         if labels == meta['labels']:
             if os.path.isfile(line[0]):
                 with open(line[0], 'rb') as f:
-                    return pickle.load(f, encoding = 'latin1')[0]
+                    #return pickle.load(f, encoding = 'latin1')[0]
+                    return pickle.load(f)[0]
 
     # actual parsing
     ann = self.FLAGS.annotation
@@ -34,7 +36,8 @@ def parse(self, exclusive = False):
         msg = 'Annotation directory not found {} .'
         exit('Error: {}'.format(msg.format(ann)))
     print('\n{} parsing {}'.format(meta['model'], ann))
-    dumps = pascal_voc_clean_xml(ann, meta['labels'], exclusive)
+    #dumps = pascal_voc_clean_xml(ann, meta['labels'], exclusive)
+    dumps = udacity_voc_csv(ann, meta['labels'], exclusive)
 
     save_to = os.path.join('net', 'yolo', meta['name'])
     while True:
