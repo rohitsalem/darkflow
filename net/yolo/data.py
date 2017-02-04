@@ -69,7 +69,7 @@ def _batch(self, chunk):
     jpg = chunk[0]; w, h, allobj_ = chunk[1]
     allobj = deepcopy(allobj_)
     path = os.path.join(self.FLAGS.dataset, jpg)
-    img, im = self.preprocess(path, allobj)
+    img = self.preprocess(path, allobj)
 
     # Calculate regression target
     cellx = 1. * w / S
@@ -146,7 +146,7 @@ def shuffle(self):
 
             for j in range(b*batch, b*batch+batch):
                 train_instance = data[shuffle_idx[j]]
-                inp, new_feed = _batch(self, train_instance)
+                inp, new_feed = self._batch(train_instance)
 
                 if inp is None: continue
                 x_batch += [np.expand_dims(inp, 0)]
