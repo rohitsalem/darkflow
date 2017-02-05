@@ -26,12 +26,12 @@ def udacity_voc_csv(ANN, pick, exclusive = False):
     dumps = list()
 
     csv_fname = os.path.join('/home/yan/data/udacity_data/udacity.csv')
-    with open(csv_fname, 'rb') as csvfile:
-        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+    with open(csv_fname, 'r') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|', )
         for row in spamreader:
             img_name = row[0]
             w = 1920
-            h = 1080
+            h = 1200
       
             labels = row[1:]
             all = list()

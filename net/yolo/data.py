@@ -2,7 +2,8 @@ from utils.pascal_voc_clean_xml import pascal_voc_clean_xml
 from utils.udacity_voc_csv import udacity_voc_csv
 from numpy.random import permutation as perm
 from .test import preprocess
-# from .misc import show
+from .misc import show
+from .misc import show2
 from copy import deepcopy
 import pickle
 import numpy as np
@@ -88,7 +89,7 @@ def _batch(self, chunk):
         obj[2] = cy - np.floor(cy) # centery
         obj += [int(np.floor(cy) * S + np.floor(cx))]
 
-    # show(im, allobj, S, w, h, cellx, celly) # unit test
+    #show(img, allobj, S, 448, 448, 448./S, 448./S) # unit test
 
     # Calculate placeholders' values
     probs = np.zeros([S*S,C])

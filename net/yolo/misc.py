@@ -35,11 +35,13 @@ def labels(meta):
                 meta['labels'] += [lab]
     if len(meta['labels']) == 0: 
         meta['labels'] = labels20
+    print(meta['labels'])
 
 def is_inp(self, name): 
     return name[-4:] in ['.jpg','.JPG', '.jpeg', '.JPEG']
 
 def show(im, allobj, S, w, h, cellx, celly):
+    img = np.array(im)
     for obj in allobj:
         a = obj[5] % S
         b = obj[5] // S
@@ -49,11 +51,11 @@ def show(im, allobj, S, w, h, cellx, celly):
         centery = cy * celly
         ww = obj[3]**2 * w
         hh = obj[4]**2 * h
-        cv2.rectangle(im,
+        cv2.rectangle(img,
             (int(centerx - ww/2), int(centery - hh/2)),
             (int(centerx + ww/2), int(centery + hh/2)),
             (0,0,255), 2)
-    cv2.imshow("result", im)
+    cv2.imshow("result", img)
     cv2.waitKey()
     cv2.destroyAllWindows()
 

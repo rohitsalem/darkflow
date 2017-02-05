@@ -3,6 +3,7 @@ import time
 import numpy as np
 import tensorflow as tf
 import pickle
+import cv2
 
 train_stats = (
     'Training statistics: \n'
