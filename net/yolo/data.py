@@ -2,8 +2,7 @@ from utils.pascal_voc_clean_xml import pascal_voc_clean_xml
 from utils.udacity_voc_csv import udacity_voc_csv
 from numpy.random import permutation as perm
 from .test import preprocess
-from .misc import show
-from .misc import show2
+# from .misc import show
 from copy import deepcopy
 import pickle
 import numpy as np
@@ -28,8 +27,8 @@ def parse(self, exclusive = False):
         if labels == meta['labels']:
             if os.path.isfile(line[0]):
                 with open(line[0], 'rb') as f:
-                    #return pickle.load(f, encoding = 'latin1')[0]
-                    return pickle.load(f)[0]
+                    return pickle.load(f, encoding = 'latin1')[0]
+                    #return pickle.load(f)[0]
 
     # actual parsing
     ann = self.FLAGS.annotation
@@ -89,7 +88,7 @@ def _batch(self, chunk):
         obj[2] = cy - np.floor(cy) # centery
         obj += [int(np.floor(cy) * S + np.floor(cx))]
 
-    #show(img, allobj, S, 448, 448, 448./S, 448./S) # unit test
+    # show(img, allobj, S, 448, 448, 448./S, 448./S) # unit test
 
     # Calculate placeholders' values
     probs = np.zeros([S*S,C])
