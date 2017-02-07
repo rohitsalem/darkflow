@@ -20,7 +20,7 @@ TODO: training YOLOv2
 
 Skip this if you are not training or fine-tuning anything (you simply want to forward flow a trained net)
 
-For example, if you want to work with only 3 classes `tvmonitor`, `person`, `pottedplant`; edit `labels.txt` as follows
+For example, if you want to work with only 3 classes `tvmonitor`, `person`, `pottedplant`; create and edit `labels.txt` at the repository root folder as follows
 
 ```
 tvmonitor
@@ -105,6 +105,26 @@ During training, the script will occasionally save intermediate results into Ten
 # Fine tuning yolo-tiny from the original one
 ./flow --train --model cfg/yolo-tiny.cfg --load bin/yolo-tiny.weights
 ```
+
+### Training against Udacity Self Driving Datasets
+Udacity Self Driving Car course have provided [an annotated dataset](https://github.com/udacity/self-driving-car/tree/master/annotations) of images that contains bounding boxes for five classes of objects: cars, pedestrians, truck, cyclists and traffic lights.
+
+A model cfg based on v1.1/tiny-yolo is provided for the udacity dataset in `cfg/v1.1/tiny-yolov1-udacity-5c.cfg`, with a TensorFlow checkpoint (here)[https://drive.google.com/file/d/0B2K7eATT8qRARVVvcGtQUzRBV1E/view?usp=sharing]
+
+To train tiny-yolov1.weights from for the udacity dataset, the following step was taken:
+1. Download udacity dataset (here)[http://bit.ly/udacity-annotations-autti] and download the following (annotation file)[https://drive.google.com/file/d/0B2K7eATT8qRAZHlsdTVCNWVLVnM/view?usp=sharing]
+
+2. Create a small dataset with 3-5 images, and train via:
+```
+python3 flow --train --model cfg/v1.1/tiny-yolov1-5c.cfg --load tiny-yolov1.weights --dataset <folder to udacity images> --gpu 1.0
+```
+3. Reduce the learning rate in the cfg file, and continue training.
+```
+python3 flow --train --model cfg/v1.1/tiny-yolov1-5c.cfg --load -1 --dataset <folder to udacity images> --gpu 1.0
+```
+
+In general, above is a guideline to train against other datasets with different classes.
+
 
 ### Migrating the graph to mobile devices (JAVA / C++ / Objective-C++)
 
