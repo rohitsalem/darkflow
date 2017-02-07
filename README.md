@@ -114,7 +114,7 @@ During training, the script will occasionally save intermediate results into Ten
 
 Udacity Self Driving Car course have provided an annotated dataset of images that contains bounding boxes for five classes of objects: cars, pedestrians, truck, cyclists and traffic lights.
 
-A model cfg based on v1.1/tiny-yolo is provided for the udacity dataset in cfg/v1.1/tiny-yolov1-udacity-5c.cfg, with a TensorFlow checkpoint (here)[https://drive.google.com/file/d/0B2K7eATT8qRARVVvcGtQUzRBV1E/view?usp=sharing]
+A model cfg based on v1.1/tiny-yolo is provided for the udacity dataset in cfg/v1.1/tiny-yolov1-5c.cfg, with a TensorFlow checkpoint (here)[https://drive.google.com/file/d/0B2K7eATT8qRARVVvcGtQUzRBV1E/view?usp=sharing]
 
 To train tiny-yolov1.weights from for the udacity dataset, the following step was taken: 1. Download udacity dataset (here)[http://bit.ly/udacity-annotations-autti] and download the following (annotation file)[https://drive.google.com/file/d/0B2K7eATT8qRAZHlsdTVCNWVLVnM/view?usp=sharing]
 
