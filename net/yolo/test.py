@@ -40,7 +40,7 @@ def preprocess(self, im, allobj = None):
 	imsz = imsz / 255.
 	imsz = imsz[:,:,::-1]
 	if allobj is None: return imsz
-        return imsz#, np.array(im) # for unit testing
+	return imsz#, np.array(im) # for unit testing
 	
 _thresh = dict({
 	'person': .2,
