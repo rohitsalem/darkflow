@@ -114,14 +114,20 @@ During training, the script will occasionally save intermediate results into Ten
 
 Udacity Self Driving Car course have provided an annotated dataset of images that contains bounding boxes for five classes of objects: cars, pedestrians, truck, cyclists and traffic lights.
 
-A model cfg based on v1.1/tiny-yolo is provided for the udacity dataset in cfg/v1.1/tiny-yolov1-5c.cfg, with a TensorFlow checkpoint [here](https://drive.google.com/file/d/0B2K7eATT8qRARVVvcGtQUzRBV1E/view?usp=sharing).
+A model cfg based on v1.1/tiny-yolo is provided for the udacity dataset in cfg/v1.1/tiny-yolov1-5c.cfg, with a TensorFlow checkpoint [here](https://drive.google.com/file/d/0B2K7eATT8qRARVVvcGtQUzRBV1E/view?usp=sharing). A v2 tiny-yolo configuration for the udacity dataset could be found under cfg/tiny-yolo-udacity.cfg, with checkpoint [here](https://drive.google.com/file/d/0B2K7eATT8qRAY0g0aWhjdkw0bEU/view?usp=sharing)
 
 To train tiny-yolov1.weights from for the udacity dataset, the following step was taken: 1. Download udacity dataset [here](http://bit.ly/udacity-annotations-autti) and download the following [annotation file](https://drive.google.com/file/d/0B2K7eATT8qRAZHlsdTVCNWVLVnM/view?usp=sharing).
 
 Create a small dataset with 3-5 images, and train via:
+```
 python3 flow --train --model cfg/v1.1/tiny-yolov1-5c.cfg --load tiny-yolov1.weights --dataset <folder to udacity images> --gpu 1.0
+```
+
 Reduce the learning rate in the cfg file, and continue training.
+```
 python3 flow --train --model cfg/v1.1/tiny-yolov1-5c.cfg --load -1 --dataset <folder to udacity images> --gpu 1.0
+```
+
 In general, above is a guideline to train against other datasets with different classes.
 
 ### Migrating the graph to mobile devices (JAVA / C++ / Objective-C++)
