@@ -1,0 +1,5 @@
+cars
+pedestrians
+truck
+cyclists 
+traffic lights
