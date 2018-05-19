@@ -2,16 +2,27 @@ import numpy as np
 import math
 import cv2
 import os
+import json
 #from scipy.special import expit
 from utils.box import BoundBox, box_iou, prob_compare
 from utils.box import prob_compare2, box_intersection
-	
+
 _thresh = dict({
 	'person': .2,
 	'pottedplant': .1,
 	'chair': .12,
 	'tvmonitor': .13
 })
+
+obj = dict({
+	'class': 'None',
+	'x_center': 0,
+	'y_center': 0,
+	'x_width': 0,
+	'y_height': 0,
+})
+
+objs = []
 
 def expit(x):
 	return 1. / (1. + np.exp(-x))
@@ -32,7 +43,7 @@ def postprocess(self, net_out, im, save = True):
 	C, B = meta['classes'], meta['num']
 	anchors = meta['anchors']
 	net_out = net_out.reshape([H, W, B, -1])
-
+	data = {}
 	boxes = list()
 	for row in range(H):
 		for col in range(W):
@@ -84,14 +95,24 @@ def postprocess(self, net_out, im, save = True):
 			if top   < 0    :   top = 0
 			if bot   > h - 1:   bot = h - 1
 			thick = int((h+w)/300)
-			cv2.rectangle(imgcv, 
-				(left, top), (right, bot), 
+			cv2.rectangle(imgcv,
+				(left, top), (right, bot),
 				colors[max_indx], thick)
 			mess = '{}'.format(label)
-			cv2.putText(imgcv, mess, (left, top - 12), 
+			centerx = int((left + right)/2)
+			centery = int((top + bot)/2)
+			widthx = abs(right-left)
+			heighty = abs(top-bot)
+			obj['class'] = mess
+			obj['x_center'] = centerx
+			obj['y_center'] = centery
+			obj['x_width'] = widthx
+			obj['y_height'] = heighty
+			objs.append(obj)
+			cv2.putText(imgcv, mess, (left, top - 12),
 				0, 1e-3 * h, colors[max_indx],thick//3)
-
+	print (objs)
 	if not save: return imgcv
-	outfolder = os.path.join(self.FLAGS.test, 'out') 
+	outfolder = os.path.join(self.FLAGS.test, 'out')
 	img_name = os.path.join(outfolder, im.split('/')[-1])
 	cv2.imwrite(img_name, imgcv)

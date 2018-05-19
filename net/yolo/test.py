@@ -3,6 +3,17 @@ from utils.box import BoundBox, box_iou, prob_compare
 import numpy as np
 import cv2
 import os
+import json
+
+obj = dict({
+	'class': 'None',
+	'x_center': 0,
+	'y_center': 0,
+	'x_width': 0,
+	'y_height': 0,
+})
+
+objs = []
 
 def _fix(obj, dims, scale, offs):
 	for i in range(1, 5):
@@ -16,10 +27,10 @@ def preprocess(self, im, allobj = None):
 	Takes an image, return it as a numpy tensor that is readily
 	to be fed into tfnet. If there is an accompanied annotation (allobj),
 	meaning this preprocessing is serving the train process, then this
-	image will be transformed with random noise to augment training data, 
-	using scale, translation, flipping and recolor. The accompanied 
+	image will be transformed with random noise to augment training data,
+	using scale, translation, flipping and recolor. The accompanied
 	parsed annotation (allobj) will also be modified accordingly.
-	"""	
+	"""
 	if type(im) is not np.ndarray:
 		im = cv2.imread(im)
 
@@ -41,7 +52,7 @@ def preprocess(self, im, allobj = None):
 	imsz = imsz[:,:,::-1]
 	if allobj is None: return imsz
 	return imsz#, np.array(im) # for unit testing
-	
+
 _thresh = dict({
 	'person': .2,
 	'pottedplant': .1,
@@ -113,16 +124,30 @@ def postprocess(self, net_out, im, save = True):
 			if top   < 0    :   top = 0
 			if bot   > h - 1:   bot = h - 1
 			thick = int((h + w) // 150)
-			cv2.rectangle(imgcv, 
-				(left, top), (right, bot), 
+			cv2.rectangle(imgcv,
+				(left, top), (right, bot),
 				self.meta['colors'][max_indx], thick)
 			mess = '{}'.format(label)
+			centerx = int((left + right)/2)
+			centery = int((top + bot)/2)
+			widthx = abs(right-left)
+			heighty = abs(top-bot)
+			obj['class'] = mess
+			obj['x_center'] = centerx
+			obj['y_center'] = centery
+			obj['x_width'] = widthx
+			obj['y_height'] = heighty
+			objs.append(obj)
 			cv2.putText(
-				imgcv, mess, (left, top - 12), 
+				imgcv, mess, (left, top - 12),
 				0, 1e-3 * h, self.meta['colors'][max_indx],
 				thick // 3)
+	# print((objs))
 
 	if not save: return imgcv
-	outfolder = os.path.join(FLAGS.test, 'out') 
+	outfolder = os.path.join(FLAGS.test, 'out')
 	img_name = os.path.join(outfolder, im.split('/')[-1])
 	cv2.imwrite(img_name, imgcv)
+	json_file = os.path.join(FLAGS.test, 'detection_objects.json')
+	with open(json_file, 'wt') as outfile:
+		json.dump(objs, outfile)
